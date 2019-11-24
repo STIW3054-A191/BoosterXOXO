@@ -1,5 +1,5 @@
 # BoosterXOXO
-Real-Time Programming Group Projec
+Real-Time Programming Group Project
 
 # Group Info
 
