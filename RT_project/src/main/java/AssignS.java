@@ -52,7 +52,8 @@ public class AssignS {
 
         
         followers = lines;
-System.out.print(All);
+        System.out.print("List All students submit Assignment 1 ");
+        System.out.print(All);
 //System.out.println(Arrays.toString(lines));
     }
 }
