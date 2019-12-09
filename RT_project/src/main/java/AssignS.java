@@ -53,6 +53,7 @@ public class AssignS {
         
         followers = lines;
         System.out.println("List All students submit Assignment 1 ");
+        System.out.println("------------------------------------------");
         System.out.print(All);
 //System.out.println(Arrays.toString(lines));
     }
