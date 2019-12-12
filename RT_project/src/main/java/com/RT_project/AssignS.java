@@ -38,6 +38,7 @@ public class AssignS {
         }
       
         String[] lines = studentsListData.split(Character.toString(sep));
+        for (int i = 2; i < lines.length; i++) {}
         
         System.out.println(studentsListData);
         
