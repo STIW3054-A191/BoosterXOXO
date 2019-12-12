@@ -62,6 +62,7 @@ public class AssignS {
             }
             System.out.println();
         }
+        ///tset array
         System.out.println("\n"+WikiList[4][0]+"    "+WikiList[4][1]+"    "+WikiList[4][2]);
         
         }
