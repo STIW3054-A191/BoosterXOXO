@@ -44,6 +44,25 @@ public class AssignS {
             line = line.replace(" | ", "|");
             line = line.replace(" |", "|");
             line = line.replace("| ", "|");
+            line = line.replace("|", "#");
+            line = line.substring(1);
+            String[] Perfectline = line.split("#");
+            //ID
+            WikiList[i - 2][0] = Perfectline[0];
+            //Matric
+            WikiList[i - 2][1] = Perfectline[1];
+            //Name
+            WikiList[i - 2][2] = Perfectline[2];
+        }
+        for (String strw[] : WikiList) {
+
+            for (String strw2 : strw) {
+                System.out.print("|" + strw2 + "|");
+            }
+            System.out.println();
+        }
+        System.out.println("\n"+WikiList[4][0]+"    "+WikiList[4][1]+"    "+WikiList[4][2]);
+        
         }
         
         System.out.println(studentsListData);
