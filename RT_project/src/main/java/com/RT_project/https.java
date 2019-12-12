@@ -71,7 +71,7 @@ public class https {
 
                
             } else {
-                System.out.println("No file to download. Server replied HTTP code: " + responseCode);
+                System.out.println(" No file to download. Server replied HTTP code: " + responseCode);
             }
             httpConn.disconnect();
         }
