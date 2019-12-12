@@ -22,6 +22,7 @@ public class AssignS {
         String saveDir = System.getProperty("java.io.tmpdir");
         String studentsListData ="";
         String All = "";
+        String[][] WikiList = new String[35][3];
         char sep = (char) 10;
 
         try {
