@@ -42,6 +42,8 @@ public class AssignS {
             String line = lines[i];
             line = line.replace("  ", "");
             line = line.replace(" | ", "|");
+            line = line.replace(" |", "|");
+            line = line.replace("| ", "|");
         }
         
         System.out.println(studentsListData);
