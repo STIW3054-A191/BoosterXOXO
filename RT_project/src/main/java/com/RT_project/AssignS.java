@@ -40,6 +40,8 @@ public class AssignS {
         String[] lines = studentsListData.split(Character.toString(sep));
         for (int i = 2; i < lines.length; i++) {
             String line = lines[i];
+            line = line.replace("  ", "");
+            line = line.replace(" | ", "|");
         }
         
         System.out.println(studentsListData);
@@ -60,10 +62,10 @@ public class AssignS {
         All = All.replace("\"", "");
         All = All.replace("login:", "");
         All = All.replace("\\r\\n", "");
-        String[] lines = All.split(Character.toString(sep));
+        String[] lines1 = All.split(Character.toString(sep));
 
         
-        followers = lines;
+        followers = lines1;
         System.out.println("List All students submit Assignment 1 ");
         System.out.println("------------------------------------------");
         System.out.print(All);
