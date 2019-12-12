@@ -37,7 +37,7 @@ public class AssignS {
             e.printStackTrace();
         }
       
-        
+        String[] lines = studentsListData.split(Character.toString(sep));
         
         System.out.println(studentsListData);
         
