@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
+
 public class AssignS {
 
     public static String[] followers = new String[30];
@@ -19,21 +20,27 @@ public class AssignS {
 
     static void app() {
         String saveDir = System.getProperty("java.io.tmpdir");
+        String studentsListData ="";
         String All = "";
         char sep = (char) 10;
 
         try {
 
+            https.downloadFile("https://raw.githubusercontent.com/wiki/STIW3054-A191/Assignments/List_of_Student.md", saveDir); 
+            https.downloadFile("https://api.github.com/repos/STIW3054-A191/Assignments/issues/1/comments?page=1", saveDir);
             
-                   https.downloadFile("https://api.github.com/repos/STIW3054-A191/Assignments/issues/1/comments?page=1", saveDir);
-                   
-                 All = All + readFileAsString(saveDir + System.getProperty("file.separator") + "commentspage=1.txt");
+            studentsListData = readFileAsString(saveDir + System.getProperty("file.separator") + "List_of_Student.md");       
+            All = All + readFileAsString(saveDir + System.getProperty("file.separator") + "commentspage=1.txt");
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
       
+        
+        
+        System.out.println(studentsListData);
+        
         All = All.replace("},{", "\n");
         All = All.replaceAll("\"url\".*?er\":", "");//for replace the text after user 
         All = All.replaceAll("\"id\".*?A191-A1\"", "");//for replace the text after user 
