@@ -8,7 +8,7 @@ public class main {
 		// TODO Auto-generated method stub
 
 		AssignS A = new AssignS();
-        A.app();
+      	        A.app();
 	}
 
 }
