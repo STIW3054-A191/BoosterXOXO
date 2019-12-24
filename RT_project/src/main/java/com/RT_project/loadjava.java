@@ -1,7 +1,6 @@
 package com.RT_project;
 
 import static com.RT_project.AssignS.javafile;
-
  class loadjava extends Thread{
 	 
 	 public void run() {
