@@ -10,7 +10,8 @@ import java.util.Arrays;
 
 public class AssignS {
 
-    public static String[] followers = new String[30];
+    public static String[] followers = new String[28];
+    public static String[] javafile = new String[28];
 
     public static String readFileAsString(String fileName) throws IOException {
         String data = "";
@@ -22,6 +23,7 @@ public class AssignS {
         String saveDir = System.getProperty("java.io.tmpdir");
         String studentsListData ="";
         String All = "";
+        String file= "";
         String[][] WikiList = new String[35][3];
         char sep = (char) 10;
 
@@ -29,9 +31,11 @@ public class AssignS {
 
             https.downloadFile("https://raw.githubusercontent.com/wiki/STIW3054-A191/Assignments/List_of_Student.md", saveDir); 
             https.downloadFile("https://api.github.com/repos/STIW3054-A191/Assignments/issues/1/comments?page=1", saveDir);
+            https.downloadFile("https://api.github.com/repos/STIW3054-A191/Assignments/issues/1/comments?page=1", saveDir);
             
             studentsListData = readFileAsString(saveDir + System.getProperty("file.separator") + "List_of_Student.md");       
             All = All + readFileAsString(saveDir + System.getProperty("file.separator") + "commentspage=1.txt");
+            file = file + readFileAsString(saveDir + System.getProperty("file.separator") + "commentspage=1.txt");
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -40,8 +44,8 @@ public class AssignS {
       
         String[] lines = studentsListData.split(Character.toString(sep));
         for (int i = 2; i < lines.length; i++) {
-            String line = lines[i];
-            line = line.replace("  ", "");
+        	String line = lines[i];
+        	line = line.replace("  ", "");
             line = line.replace(" | ", "|");
             line = line.replace(" |", "|");
             line = line.replace("| ", "|");
@@ -55,20 +59,16 @@ public class AssignS {
             //Name
             WikiList[i - 2][2] = Perfectline[2];
         }
-        for (String strw[] : WikiList) {
+      /*  for (String strw[] : WikiList) {
 
             for (String strw2 : strw) {
                 System.out.print("|" + strw2 + "|");
             }
             System.out.println();
-        }
-        ///tset array
-        System.out.println("\n"+WikiList[4][0]+"    "+WikiList[4][1]+"    "+WikiList[4][2]);
+        }*/
+     //   System.out.println("\n"+WikiList[4][0]+"    "+WikiList[4][1]+"    "+WikiList[4][2]);
         
-        }
-        
-        System.out.println(studentsListData);
-        
+       // All = All.replace("[", "");
         All = All.replace("},{", "\n");
         All = All.replaceAll("\"url\".*?er\":", "");//for replace the text after user 
         All = All.replaceAll("\"id\".*?A191-A1\"", "");//for replace the text after user 
@@ -89,9 +89,36 @@ public class AssignS {
 
         
         followers = lines1;
-        System.out.println("List All students submit Assignment 1 ");
-        System.out.println("------------------------------------------");
-        System.out.print(All);
-//System.out.println(Arrays.toString(lines));
+       // System.out.println("List All students submit Assignment 1 ");
+      //  System.out.println("------------------------------------------");
+      //  System.out.print(All);
+//System.out.println(Arrays.toString(lines1));
+        
+        file = file.replace("},{", "\n");
+        file = file.replace("}", "");
+        file = file.replace(",", "");
+        file = file.replaceAll("url.*?false", "");//for replace the text after user 
+        file = file.replaceAll("created_at.*?NONE", "");//for replace the text after user 
+        file = file.replaceAll("\"\".*?,", "");//for replace the text after user 
+        file = file.replace("[{\"", "");
+        file = file.replace("]", "");
+        file = file.replace("\\r\\n", "");
+        file = file.replace("\"", "");
+        file = file.replace("{", "");
+        file = file.replace("body:", "");
+        file = file.replace(".git", "");
+        String []allfile =file.split(Character.toString(sep));
+        
+        javafile = allfile;
+
+     //  System.out.println(Arrays.toString(javafile));
+     /*   for(int i=0; i<javafile.length;i++) {
+        System.out.println(javafile[i]);
+        
+        }*/
+     //   System.out.println(javafile[27]);
+
+        
+        
     }
 }
