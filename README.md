@@ -1,12 +1,12 @@
 # BoosterXOXO
 
-1.Group Info
-2.Introduction
-3.Result/Output
-4.UML Class Diagram
-5.YouTube Presentation
-6.References
-7.Real-Time Programming Group Project
+1.Group Info  
+2.Introduction  
+3.Result/Output  
+4.UML Class Diagram  
+5.YouTube Presentation  
+6.References  
+7.Real-Time Programming Group Project  
 
 # Group Info
 
