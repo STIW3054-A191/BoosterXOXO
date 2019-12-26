@@ -8,10 +8,10 @@ import static com.RT_project.AssignS.javafile;
 	        {  
 	         // We are running "dir" and "ping" commands and  "mkdir" command to create nwe flie name 'repos'  command on cmd 
 		     Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"dir && ping localhost\"\"&&mkdir repos \""); 
-			 sleep(1000);
+			 sleep(500);
 	             for(int i=0;i<javafile.length;i++) {
 	        	 Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"dir && ping localhost\"\"&&cd repos&&git clone "+javafile[i]+".git \"");
-	       		  sleep(5000);
+	       		  sleep(4000);
 	        	}
 	        } 
 	        catch (Exception e) 
