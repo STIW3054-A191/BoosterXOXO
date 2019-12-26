@@ -6,7 +6,8 @@ import static com.RT_project.AssignS.javafile;
 	 public void run() {
 		 try
 	        {  
-	         // We are running "dir" and "ping" command on cmd 
+	         // We are running "dir" and "ping" commands and  "mkdir" command to create nwe flie name 'repos'  command on cmd 
+		 Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"dir && ping localhost\"\"&&mkdir repos \""); 
 	        	for(int i=0;i<javafile.length;i++) {
 	         Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"dir && ping localhost\"\" &&git clone "+javafile[i]+".git \"");
 	         sleep(5000);
