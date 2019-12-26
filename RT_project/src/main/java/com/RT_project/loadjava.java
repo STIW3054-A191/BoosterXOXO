@@ -10,7 +10,7 @@ import static com.RT_project.AssignS.javafile;
 		     Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"dir && ping localhost\"\"&&mkdir repos \""); 
 			 sleep(1000);
 	             for(int i=0;i<javafile.length;i++) {
-	        	 Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"dir && ping localhost\"\" &&git clone "+javafile[i]+".git \"");
+	        	 Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"dir && ping localhost\"\"&&cd repos&&git clone "+javafile[i]+".git \"");
 	       		  sleep(5000);
 	        	}
 	        } 
