@@ -11,7 +11,7 @@ import static com.RT_project.AssignS.javafile;
 			 sleep(500);
 	             for(int i=0;i<javafile.length;i++) {
 	        	 Runtime.getRuntime().exec("cmd /c start cmd.exe /K \"dir && ping localhost\"\"&&cd repos&&git clone "+javafile[i]+".git \"");
-	       		  sleep(4000);
+	       		  sleep(1000);
 	        	}
 	        } 
 	        catch (Exception e) 
@@ -19,6 +19,7 @@ import static com.RT_project.AssignS.javafile;
 	            System.out.println("HEY Buddy ! U r Doing Something Wrong "); 
 	            e.printStackTrace(); 
 	        }
+		 System.out.println("\n\n\t\t**Complated Download All Repository**");
 	 };
 	
-} 
+}
