@@ -59,6 +59,10 @@ public class AssignS {
             //Name
             WikiList[i - 2][2] = Perfectline[2];
         }
+        
+        System.out.println("\n------------------------------------------");
+        System.out.println("\t\tList of Students ");
+        System.out.println("------------------------------------------");
         for (String strw[] : WikiList) {
 
             for (String strw2 : strw) {
@@ -66,7 +70,6 @@ public class AssignS {
             }
             System.out.println();
         }
-         System.out.println("\n"+WikiList[4][0]+"    "+WikiList[4][1]+"    "+WikiList[4][2]);
         
        // All = All.replace("[", "");
         All = All.replace("},{", "\n");
@@ -89,6 +92,7 @@ public class AssignS {
 
         
         followers = lines1;
+        System.out.println("\n------------------------------------------");
         System.out.println("List All students submit Assignment 1 ");
         System.out.println("------------------------------------------");
         System.out.print(All);
@@ -110,8 +114,10 @@ public class AssignS {
         String []allfile =file.split(Character.toString(sep));
         
         javafile = allfile;
-
-     //  System.out.println(Arrays.toString(javafile));
+        
+        System.out.println("\n------------------------------------------------------");
+        System.out.println("\t\t List of Link of Repository");
+        System.out.println("------------------------------------------------------");
         for(int i=0; i<javafile.length;i++) {
         System.out.println(javafile[i]);
         
