@@ -1,3 +1,4 @@
+package
 import org.apache.bcel.classfile.*;
 import org.apache.bcel.generic.*;
 import org.apache.bcel.Repository;
