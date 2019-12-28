@@ -1,186 +1,160 @@
-import java.util.Set;
-import java.util.Stack;
+import org.apache.bcel.classfile.*;
+import org.apache.bcel.generic.*;
+import org.apache.bcel.Repository;
+import org.apache.bcel.Constants;
+import org.apache.bcel.util.*;
+import java.io.*;
+import java.util.*;
+import java.lang.reflect.Modifier;
 
 
-public class ClassVisitor extends ASTVisitor {
-    private String sourceFilePath;
-    private int anonymousNumber;
+public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
+    private JavaClass visitedClass;
+    private ConstantPoolGen cp;
+    private String myClassName;
+    private ClassMetricsContainer cmap;
+    private ClassMetrics cm;
+    private HashSet<String> efferentCoupledClasses = new HashSet<String>();
+    private HashSet<String> responseSet = new HashSet<String>();
+    ArrayList<TreeSet<String>> mi = new ArrayList<TreeSet<String>>();
 
-    class MethodInTheStack {
-        methodResult result;
-        List<MethodLevelMetric> methodLevelMetrics;
+    public ClassVisitor(JavaClass jc, ClassMetricsContainer classMap) {
+        visitedClass = jc;
+        cp = new ConstantPoolGen(visitedClass.getConstantPool());
+        cmap = classMap;
+        myClassName = jc.getClassName();
+        cm = cmap.getMetrics(myClassName);
     }
 
-    class ClassInTheStack {
-        classResult result;
-        List<ClassLevelMetric> classLevelMetrics;
-        Stack<MethodInTheStack> methods;
+    public ClassMetrics getMetrics() { return cm; }
 
+    public void start() {
+        visitJavaClass(visitedClass);
+    }
+    public void visitJavaClass(JavaClass jc) {
+        String super_name   = jc.getSuperclassName();
+        String package_name = jc.getPackageName();
 
-        ClassInTheStack() {
-            methods = new Stack<>();
+        cm.setVisited();
+        if (jc.isPublic())
+            cm.setPublic();
+        ClassMetrics pm = cmap.getMetrics(super_name);
+
+        pm.incNoc();
+        try {
+            cm.setDit(jc.getSuperClasses().length);
+        } catch( ClassNotFoundException ex) {
+            System.err.println("Error obtaining " + jc);
+        }
+        registerCoupling(super_name);
+
+        String ifs[] = jc.getInterfaceNames();
+        /* Measuring decision: couple interfaces */
+        for (int i = 0; i < ifs.length; i++)
+            registerCoupling(ifs[i]);
+
+        Field[] fields = jc.getFields();
+        for(int i=0; i < fields.length; i++)
+            fields[i].accept(this);
+
+        Method[] methods = jc.getMethods();
+        for(int i=0; i < methods.length; i++)
+            methods[i].accept(this);
+    }
+
+    public void registerCoupling(String className) {
+        /* Measuring decision: don't couple to Java SDK */
+        if ((MetricsFilter.isJdkIncluded() ||
+                !ClassMetrics.isJdkClass(className)) &&
+                !myClassName.equals(className)) {
+            efferentCoupledClasses.add(className);
+            cmap.getMetrics(className).addAfferentCoupling(myClassName);
         }
     }
-    private Stack<ClassInTheStack> classes;
 
-    private Set<classResult> collectedClasses;
-
-    private CompilationUnit cu;
-    private Callable<List<ClassLevelMetric>> classLevelMetrics;
-    private Callable<List<MethodLevelMetric>> methodLevelMetrics;
-
-    public ClassVisitor(String sourceFilePath, CompilationUnit cu, Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
-        this.sourceFilePath = sourceFilePath;
-        this.cu = cu;
-        this.classLevelMetrics = classLevelMetrics;
-        this.methodLevelMetrics = methodLevelMetrics;
-        this.classes = new Stack<>();
-        this.collectedClasses = new HashSet<>();
+    public void registerCoupling(Type t) {
+        registerCoupling(className(t));
     }
-    @Override
-    public boolean visit(TypeDeclaration node) {
-        ITypeBinding binding = node.resolveBinding();
 
-        // there might be metrics that use it
-        // (even before a class is declared)
-        if(!classes.isEmpty()) {
-            classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
-            if (!classes.peek().methods.isEmpty())
-                classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
+    void registerFieldAccess(String className, String fieldName) {
+        registerCoupling(className);
+        if (className.equals(myClassName))
+            mi.get(mi.size() - 1).add(fieldName);
+    }
+
+
+    void registerMethodInvocation(String className, String methodName, Type[] args) {
+        registerCoupling(className);
+
+        incRFC(className, methodName, args);
+    }
+
+
+    public void visitField(Field field) {
+        registerCoupling(field.getType());
+    }
+
+    private void incRFC(String className, String methodName, Type[] arguments) {
+        String argumentList = Arrays.asList(arguments).toString();
+
+        String args = argumentList.substring(1, argumentList.length() - 1);
+        String signature = className + "." + methodName + "(" + args + ")";
+        responseSet.add(signature);
+    }
+
+    public void visitMethod(Method method) {
+        MethodGen mg = new MethodGen(method, visitedClass.getClassName(), cp);
+
+        Type   result_type = mg.getReturnType();
+        Type[] argTypes   = mg.getArgumentTypes();
+
+        registerCoupling(mg.getReturnType());
+        for (int i = 0; i < argTypes.length; i++)
+            registerCoupling(argTypes[i]);
+
+        String[] exceptions = mg.getExceptions();
+        for (int i = 0; i < exceptions.length; i++)
+            registerCoupling(exceptions[i]);
+
+        /* Measuring decision: A class's own methods contribute to its RFC */
+        incRFC(myClassName, method.getName(), argTypes);
+
+        cm.incWmc();
+        if (Modifier.isPublic(method.getModifiers()))
+            cm.incNpm();
+        mi.add(new TreeSet<String>());
+        MethodVisitor factory = new MethodVisitor(mg, this);
+        factory.start();
+    }
+
+    static String className(Type t) {
+        String ts = t.toString();
+
+        if (t.getType() <= Constants.T_VOID) {
+            return "java.PRIMITIVE";
+        } else if(t instanceof ArrayType) {
+            ArrayType at = (ArrayType)t;
+            return className(at.getBasicType());
+        } else {
+            return t.toString();
         }
-
-        // build a classResult based on the current type
-        // declaration we are visiting
-        String className = binding != null ? binding.getBinaryName() : node.getName().getFullyQualifiedName();
-        String type = getTypeOfTheUnit(node);
-        int modifiers = node.getModifiers();
-        classResult currentClass = new classResult(sourceFilePath, className, type, modifiers);
-        currentClass.setLoc((int) JDTUtils.countLoc(node));
-
-        // create a set of visitors, just for the current class
-        List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors();
-
-        // store everything in a 'class in the stack' data structure
-        ClassInTheStack classInTheStack = new ClassInTheStack();
-        classInTheStack.result = currentClass;
-        classInTheStack.classLevelMetrics = classLevelMetrics;
-
-        // push it to the stack, so we know the current class we are visiting
-        classes.push(classInTheStack);
-
-        // there might be class level metrics that use the TypeDeclaration
-        // so, let's run them
-        classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
-
-        return true;
-    }
-    @Override
-    public void endVisit(TypeDeclaration node) {
-
-        // let's first visit any metrics that might make use of this endVisit
-        classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-
-        ClassInTheStack completedClass = classes.pop();
-
-        // persist the results of the class level metrics in the result
-        completedClass.classLevelMetrics.forEach(m -> m.setResult(completedClass.result));
-
-        // we are done processing this class, so now let's
-        // store it in the collected classes set
-        collectedClasses.add(completedClass.result);
     }
 
-    public boolean visit(MethodDeclaration node) {
+    public void end() {
+        cm.setCbo(efferentCoupledClasses.size());
+        cm.setRfc(responseSet.size());
 
-        IMethodBinding binding = node.resolveBinding();
-
-        String currentMethodName = binding!=null ? JDTUtils.getMethodFullName(binding) : JDTUtils.getMethodFullName(node);
-        boolean isConstructor = node.isConstructor();
-
-        CKMethodResult currentMethod = new CKMethodResult(currentMethodName, isConstructor, node.getModifiers());
-        currentMethod.setLoc(calculate(IOUtils.toInputStream(node.toString())));
-        currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
-
-        // let's instantiate method level visitors for this current method
-        List<MethodLevelMetric> methodLevelMetrics = instantiateMethodLevelMetricVisitors();
-
-        // we add it to the current class we are visiting
-        MethodInTheStack methodInTheStack = new MethodInTheStack();
-        methodInTheStack.result = currentMethod;
-        methodInTheStack.methodLevelMetrics = methodLevelMetrics;
-        classes.peek().methods.push(methodInTheStack);
-
-        // and there might be metrics that also use the methoddeclaration node.
-        // so, let's call them
-        classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
-        if(!classes.peek().methods.isEmpty())
-            classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
-
-        return true;
+        int lcom = 0;
+        for (int i = 0; i < mi.size(); i++)
+            for (int j = i + 1; j < mi.size(); j++) {
+                /* A shallow unknown-type copy is enough */
+                TreeSet<?> intersection = (TreeSet<?>)mi.get(i).clone();
+                intersection.retainAll(mi.get(j));
+                if (intersection.size() == 0)
+                    lcom++;
+                else
+                    lcom--;
+            }
+        cm.setLcom(lcom > 0 ? lcom : 0);
     }
-
-    @Override
-    public void endVisit(MethodDeclaration node) {
-
-        // let's first invoke the metrics, because they might use this node
-        classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-        classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-
-        // remove the method from the stack
-        MethodInTheStack completedMethod = classes.peek().methods.pop();
-
-        // persist the data of the visitors in the CKMethodResult
-        completedMethod.methodLevelMetrics.forEach(m -> m.setResult(completedMethod.result));
-
-        // store its final version in the current class
-        classes.peek().result.addMethod(completedMethod.result);
-    }
-
-
-    public boolean visit(AnonymousClassDeclaration node) {
-        // there might be metrics that use it
-        // (even before an anonymous class is created)
-        classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
-        if(!classes.peek().methods.isEmpty())
-            classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
-
-        // we give the anonymous class a 'class$AnonymousN' name
-        String anonClassName = classes.peek().result.getClassName() + "$Anonymous" + ++anonymousNumber;
-        classResult currentClass = new classResult(sourceFilePath, anonClassName, "anonymous", -1);
-        currentClass.setLoc((int) JDTUtils.countLoc(node));
-
-        // create a set of visitors, just for the current class
-        List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors();
-
-        // store everything in a 'class in the stack' data structure
-        ClassInTheStack classInTheStack = new ClassInTheStack();
-        classInTheStack.result = currentClass;
-        classInTheStack.classLevelMetrics = classLevelMetrics;
-
-        // push it to the stack, so we know the current class we are visiting
-        classes.push(classInTheStack);
-
-        // and there might be metrics that also use the methoddeclaration node.
-        // so, let's call them
-        classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
-        if(!classes.peek().methods.isEmpty())
-            classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.visit(node));
-
-        return true;
-    }
-
-    public void endVisit(AnonymousClassDeclaration node) {
-
-        classes.peek().classLevelMetrics.stream().map(metric -> (ASTVisitor) metric).forEach(ast -> ast.endVisit(node));
-
-        ClassInTheStack completedClass = classes.pop();
-
-        // persist the results of the class level metrics in the result
-        completedClass.classLevelMetrics.forEach(m -> m.setResult(completedClass.result));
-
-        // we are done processing this class, so now let's
-        // store it in the collected classes set
-        collectedClasses.add(completedClass.result);
-    }
-
 }
