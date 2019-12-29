@@ -1,12 +1,8 @@
 package com.booster;
 
 import org.apache.bcel.classfile.*;
-import org.apache.bcel.generic.*;
-import org.apache.bcel.Repository;
-import org.apache.bcel.Constants;
-import org.apache.bcel.util.*;
 import java.io.*;
-import java.util.*;
+
 
 public class MetricsFilter {
 
