@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
         // TODO Auto-generated method stub
 
-        CloneRepo b = new CloneRepo();
+        CloneRepo a = new CloneRepo();
         b.Clone();
 
 
