@@ -8,7 +8,7 @@ public class Main {
         // TODO Auto-generated method stub
 
         CloneRepo a = new CloneRepo();
-        b.Clone();
+        a.Clone();
 
 
 
