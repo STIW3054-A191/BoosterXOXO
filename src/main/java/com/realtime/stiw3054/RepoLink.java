@@ -22,7 +22,6 @@ public class RepoLink {
 
         for (Element listLink : table) {
             String url = listLink.getElementsByTag("a").attr("abs:href");
-            //System.out.println(url);
             listRepo.add(url);
         }
 
