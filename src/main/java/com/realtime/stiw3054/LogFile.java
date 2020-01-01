@@ -24,7 +24,7 @@ public class LogFile
     {
         try
         {
-            String logsDirectoryFolder = "C:\\Github Repo";
+            String logsDirectoryFolder = "C:\\Github Repo\\log";
             Files.createDirectories(Paths.get(logsDirectoryFolder));
             FileHandler fileHandler = new FileHandler(logsDirectoryFolder + File.separator + getCurrentTimeString() + ".log");
             logger.addHandler(fileHandler);
