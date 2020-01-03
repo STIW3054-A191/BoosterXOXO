@@ -25,7 +25,14 @@ This is a real-time system which are developed by using Java programming languag
 7. Generate a bar graph for each metric from the excel file and store all the graphs in a pdf file.
 8. Calculate the execution time.    
 
-
+| No  | Content |
+| ------------- | ------------- |
+| 1  | User manual  |
+| 2  | Result/Output  |
+| 3  | JavaDoc  |
+| 4  | UML Class Diagram  |
+| 5  | YouTube Presentation |
+| 6  | References  |
 
 
 
