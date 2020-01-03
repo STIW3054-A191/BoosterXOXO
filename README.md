@@ -30,11 +30,11 @@ This is a real-time system which are developed by using Java programming languag
 | No  | Content |
 | ------------- | ------------- |
 | 1  | [User manual](https://github.com/STIW3054-A191/BoosterXOXO/wiki/1.-User-manual) |
-| 2  | [Result/Output](https://github.com/STIW3054-A191/BoosterXOXO/wiki/Result-Output)  |
-| 3  | [JavaDoc](https://github.com/STIW3054-A191/BoosterXOXO/wiki/Java-Doc)  |
-| 4  | [UML Class Diagram](https://github.com/STIW3054-A191/BoosterXOXO/wiki/UML-Class-Diagram)  |
-| 5  | [YouTube Presentation](https://github.com/STIW3054-A191/BoosterXOXO/wiki/YouTube-Presentation) |
-| 6  | [References](https://github.com/STIW3054-A191/BoosterXOXO/wiki/References) |
+| 2  | [Result/Output](https://github.com/STIW3054-A191/BoosterXOXO/wiki/2.-Result-Output)  |
+| 3  | [JavaDoc](https://github.com/STIW3054-A191/BoosterXOXO/wiki/3.-JavaDoc)  |
+| 4  | [UML Class Diagram](https://github.com/STIW3054-A191/BoosterXOXO/wiki/4.-UML-Class-Diagram)  |
+| 5  | [YouTube Presentation](https://github.com/STIW3054-A191/BoosterXOXO/wiki/5.-YouTube-Presentation) |
+| 6  | [References](https://github.com/STIW3054-A191/BoosterXOXO/wiki/6.-References) |
 
 
 
