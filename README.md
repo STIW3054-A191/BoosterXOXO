@@ -36,4 +36,6 @@ Vogella(2019) JGit - Tutorial. Retrieved from https://www.vogella.com/tutorials/
 
 https://www.programcreek.com/java-api-examples/?api=org.eclipse.jgit.api.CloneCommand  
 
-http://github-api.kohsuke.org/
+http://github-api.kohsuke.org/  
+
+https://www.spinellis.gr/sw/ckjm/
