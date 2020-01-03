@@ -25,12 +25,6 @@ This is a real-time system which are developed by using Java programming languag
 7. Generate a bar graph for each metric from the excel file and store all the graphs in a pdf file.
 8. Calculate the execution time.    
 
-#### Table of contents
-
-1. [Section 1](#section-1)
-2. [Section 2](#section-2)
-    - [Subsection a](#subsection-a)
-    - [Subsection b](#subsection-b)
 
 
 
