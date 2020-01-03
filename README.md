@@ -23,7 +23,14 @@ This is a real-time system which are developed by using Java programming languag
 5. Generate software metrics using CKJM (https://www.spinellis.gr/sw/ckjm/) for each Java program and store the result in a text file.
 6. Store the accumulative metrics for all the Java programs in MS Excel.
 7. Generate a bar graph for each metric from the excel file and store all the graphs in a pdf file.
-8. Calculate the execution time.  
+8. Calculate the execution time.    
+
+#### Table of contents
+
+1. [Section 1](#section-1)
+2. [Section 2](#section-2)
+    - [Subsection a](#subsection-a)
+    - [Subsection b](#subsection-b)
 
 
 
