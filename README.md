@@ -34,8 +34,10 @@ This is a real-time system which are developed by using Java programming languag
 # References
 1. Vogella(2019) JGit - Tutorial. Retrieved from https://www.vogella.com/tutorials/JGit/article.html  
 
-https://www.programcreek.com/java-api-examples/?api=org.eclipse.jgit.api.CloneCommand  
+2. https://www.programcreek.com/java-api-examples/?api=org.eclipse.jgit.api.CloneCommand  
 
-http://github-api.kohsuke.org/  
+3. http://github-api.kohsuke.org/    
+
+4. https://www.programcreek.com/2014/01/get-the-list-of-all-public-repositories-from-github-using-java/
 
 https://www.spinellis.gr/sw/ckjm/
