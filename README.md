@@ -25,14 +25,16 @@ This is a real-time system which are developed by using Java programming languag
 7. Generate a bar graph for each metric from the excel file and store all the graphs in a pdf file.
 8. Calculate the execution time.    
 
+
+# Table of Contents
 | No  | Content |
 | ------------- | ------------- |
 | 1  | [User manual](https://github.com/STIW3054-A191/BoosterXOXO/wiki/User-manual)  |
-| 2  | Result/Output  |
-| 3  | JavaDoc  |
-| 4  | UML Class Diagram  |
-| 5  | YouTube Presentation |
-| 6  | References |
+| 2  | [Result/Output](https://github.com/STIW3054-A191/BoosterXOXO/wiki/Result-Output)  |
+| 3  | [JavaDoc](https://github.com/STIW3054-A191/BoosterXOXO/wiki/Java-Doc)  |
+| 4  | [UML Class Diagram](https://github.com/STIW3054-A191/BoosterXOXO/wiki/UML-Class-Diagram)  |
+| 5  | [YouTube Presentation](https://github.com/STIW3054-A191/BoosterXOXO/wiki/YouTube-Presentation) |
+| 6  | [References](https://github.com/STIW3054-A191/BoosterXOXO/wiki/References) |
 
 
 
