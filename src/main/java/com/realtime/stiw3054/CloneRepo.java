@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 public class CloneRepo extends Thread{
 
-
+//File is created in the file directory called Github Repo file
     public boolean mkDir(String path){
         File file = null;
         try{
@@ -67,7 +67,7 @@ public class CloneRepo extends Thread{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Downloading........");
+        System.out.println("Downloading........"); //the process of downloading the repository file
 
         System.out.println("All repositories have been successfully cloned ");
     }
