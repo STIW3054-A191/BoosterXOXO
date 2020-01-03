@@ -8,16 +8,15 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
 public class CloneRepo extends Thread{
 
-//File is created in the file directory called Github Repo file
+
     public boolean mkDir(String path){
-        File file = null;
+        File file;
         try{
             file = new File(path);
             if(!file.exists()){
@@ -26,9 +25,7 @@ public class CloneRepo extends Thread{
             else{
                 return false;
             }
-        }catch(Exception e){
-        }finally{
-            file = null;
+        }catch(Exception ignored){
         }
         return false;
     }
@@ -36,29 +33,29 @@ public class CloneRepo extends Thread{
     @Override
     public void run(){
         RepoLink a1 = new RepoLink();
-        List<String> listRepo=new ArrayList<String>();
+        List<String> listRepo= new ArrayList<>();
         try {
             listRepo.addAll(a1.showList());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for(int i = 0;i<listRepo.size();i++){
+        for (String s : listRepo) {
             try {
                 String full_command;
                 String command = "git clone {}";
-                full_command = command.replace("{}",listRepo.get(i));
+                full_command = command.replace("{}", s);
 
-                Process p = Runtime.getRuntime().exec(full_command,null,new File("C:\\Github Repo"));
+                Runtime.getRuntime().exec(full_command, null, new File("C:\\Github Repo"));
             } catch (IOException ex) {
                 Logger.getLogger(CloneRepo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
-    public void Clone() throws IOException {
+    public void Clone() {
         ExecutorService executor = Executors.newCachedThreadPool();
         Task task = new Task();
-        Future<Integer> result = executor.submit(task);
+        executor.submit(task);
         executor.shutdown();
         try {
             Thread.sleep(1000);
@@ -67,7 +64,7 @@ public class CloneRepo extends Thread{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Downloading........"); //the process of downloading the repository file
+        System.out.println("Downloading........");
 
         System.out.println("All repositories have been successfully cloned ");
     }
@@ -80,10 +77,10 @@ class Task implements Callable<Integer>{
         String mkDirPath = "C:\\Github Repo";
         CloneRepo clone = new CloneRepo();
         if(clone.mkDir(mkDirPath)){
-            System.out.println(mkDirPath+" The Direcory have been sucessfully created");
+            System.out.println(mkDirPath+" is Created");
         }
         else{
-            System.out.println(mkDirPath+" The Directory created failed!The Directory have been already existed");
+            System.out.println(mkDirPath+" The Directory have been already existed");
         }
         int repoNumber = 0;
         RepoLink a1 = new RepoLink();
